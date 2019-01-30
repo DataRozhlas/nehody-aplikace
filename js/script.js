@@ -78,7 +78,7 @@ function App(srcData) {
           <span> • </span>
           <a id="navNextDay" className="appnav" onClick={this.handleDaySwitch}>Následující den</a>
           <br />
-          <a id="navFullMonth" className="appnav" onClick={this.handleDaySwitch}>Poslední měsíc</a>
+          <a id="navFullMonth" className="appnav" onClick={this.handleDaySwitch}>Celý rok</a>
           <span> • </span>
           <a id="navLastDay" className="appnav" onClick={this.handleDaySwitch}>Poslední den</a>
         </div>
@@ -106,7 +106,7 @@ function App(srcData) {
           <Navigator day={day} changeDay={this.handleDayChange} />
           <hr />
           { monthSum
-            ? <div className="counter-header">V posledním měsíci se událo</div>
+            ? <div className="counter-header">V roce 2019 se dosud událo</div>
             : (
               <div className="counter-header">
                 <span>{`${readableWeekDay(day)} `}</span>
