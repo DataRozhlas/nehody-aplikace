@@ -7,56 +7,19 @@ import HighchartsReact from "highcharts-react-official";
 import {
   last, prepData, countTotal, readableDate,
 } from "./helperFunctions";
+import { chartOptions } from "./charts";
 
 function App(srcData) {
   const data = prepData(srcData);
-
-  const Chart = ({ chartData }) => {
-    const options = {
-      title: {
-        text: "",
-      },
-      tooltip: {
-        formatter() {
-          return `<b>${readableDate(this.point.x)}</b><br>${this.point.y} nehod`;
-        },
-      },
-      credits: {
-        text: "Zdroj: Policie ČR",
-        href: "https://aplikace.policie.cz/statistiky-dopravnich-nehod/Default.aspx",
-      },
-      xAxis: {
-        type: "datetime",
-        dateTimeLabelFormats: { // don't display the dummy year
-          month: "%e. %m.",
-          day: "%e. %m.",
-          week: "%e. %m.",
-        },
-      },
-      yAxis: {
-        title: {
-          text: "Počet nehod",
-        },
-      },
-      legend: {
-        enabled: false,
-      },
-      series: [{
-        type: "column",
-        data: chartData,
-        name: "Počet nehod",
-      }],
-    };
-
-    return (
-      <div>
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={options}
-        />
-      </div>
-    );
-  };
+  
+  const Chart = ({ chartData }) => (
+    <div>
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={chartOptions(chartData)}
+      />
+    </div>
+  );
 
   const Counter = () => (
     <div className="counter">
@@ -69,9 +32,7 @@ function App(srcData) {
         <CountUp end={last(countTotal(data, "PN"))[1]} />
       </div>
       <div className="counter-footer">
-        {"dopravních nehod,"}
-        <br />
-        {"z toho"}
+        {"dopravních nehod."}
       </div>
     </div>
   );
@@ -98,14 +59,14 @@ function App(srcData) {
   const AccidentApp = () => (
     <div>
       <Counter />
+      <div className="info">
+        {"Za následek měly"}
+      </div>
       <div className="subcounters">
         <SubCounter category="PVA" />
         <SubCounter category="NPJ" />
         <SubCounter category="NP" />
         <SubCounter category="NR" />
-      </div>
-      <div className="info">
-        {"Za následek měly"}
       </div>
       <div className="subcounters">
         <SubCounter category="M" />
