@@ -1,0 +1,42 @@
+#app {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.counter-count {
+  font-size: 500%;
+}
+
+.subcounter-count {
+  font-size: 200%;
+}
+
+.counter, .subcounter, .info {
+  text-align: center;
+}
+
+.info {
+  padding-top: 25px;
+}
+
+.last-day-readable {
+  font-weight: bold;
+}
+
+.subcounters {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.subcounters > div {
+  width: 25%;
+}
+
+@media only screen and (max-width: 620px) {
+  .subcounters {
+    flex-wrap: wrap;
+  }
+
+  .subcounters > div {
+    width: 100%;
+  }
+}
