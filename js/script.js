@@ -74,13 +74,13 @@ function App(srcData) {
     render() {
       return (
         <div className="navigator">
-          <a id="navPrevDay" onClick={this.handleDaySwitch}>Předchozí den</a>
+          <a id="navPrevDay" class="appnav" onClick={this.handleDaySwitch}>Předchozí den</a>
           <span> • </span>
-          <a id="navNextDay" onClick={this.handleDaySwitch}>Následující den</a>
+          <a id="navNextDay" class="appnav" onClick={this.handleDaySwitch}>Následující den</a>
           <br />
-          <a id="navFullMonth" onClick={this.handleDaySwitch}>Poslední měsíc</a>
+          <a id="navFullMonth" class="appnav" onClick={this.handleDaySwitch}>Poslední měsíc</a>
           <span> • </span>
-          <a id="navLastDay" onClick={this.handleDaySwitch}>Poslední den</a>
+          <a id="navLastDay" class="appnav" onClick={this.handleDaySwitch}>Poslední den</a>
         </div>
       );
     }
