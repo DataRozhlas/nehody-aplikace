@@ -1,15 +1,11 @@
-export function prepData(srcData) {
-  return srcData.sort((a, b) => new Date(a.den) - new Date(b.den));
-}
-
 export function last(arr) { // get last member of array
   return arr[arr.length - 1];
 }
 
-export function newPrepData(srcData) {
-  const data = {};
+export function prepData(srcData) {
+  const data = { days: {} };
   srcData.sort((a, b) => new Date(a.den) - new Date(b.den));
-  srcData.forEach((el) => { data[el.den] = el.data; });
+  srcData.forEach((el) => { data.days[el.den] = el.data; });
   data.meta = { firstDay: srcData[0].den, lastDay: last(srcData).den };
   return data;
 }
@@ -52,16 +48,14 @@ export function readableCategory(name) {
   }
 }
 
-export function countDayTotal(dailyData, type) {
-  let count = 0;
-  Object.keys(dailyData.data).forEach((key) => {
-    count += dailyData.data[key][type];
-  });
-  return count;
-}
-
-export function countTotal(data, category) {
-  return data.map(el => [new Date(el.den).valueOf(), countDayTotal(el, category)]);
+export function graphData(data, category) {
+  return Object.keys(data)
+    .map(el => [
+      new Date(el).getTime(),
+      Object.keys(data[el])
+        .map(subel => data[el][subel][category])
+        .reduce((a, b) => a + b, 0),
+    ]);
 }
 
 export default { prepData };

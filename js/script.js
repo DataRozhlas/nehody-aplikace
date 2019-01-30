@@ -5,15 +5,13 @@ import CountUp from "react-countup";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import {
-  last, prepData, newPrepData, countTotal, readableCategory, countDayTotals,
+  prepData, graphData, readableCategory, countDayTotals,
 } from "./helperFunctions";
 import { readableDate, readableWeekDay } from "./dateHelpers";
 import { chartOptions } from "./charts";
 
 function App(srcData) {
   const data = prepData(srcData);
-  const newData = newPrepData(srcData);
-  console.log(newData);
 
   const Chart = ({ chartData }) => (
     <div>
@@ -49,14 +47,36 @@ function App(srcData) {
     </div>
   );
 
-  const Navigator = ({ day, onDayChange }) => (
-    <div className="navigator">
-      <span id="navPrevDay" onClick={onDayChange}>Předchozí den</span>
-      <span>{` • ${day} • `}</span>
-      <span id="navNextDay">Další den</span>
-    </div>
-  );
+  class Navigator extends React.Component {
+    constructor(props) {
+      super(props);
+      this.handleDaySwitch = this.handleDaySwitch.bind(this);
+    }
 
+    handleDaySwitch(e) {
+      const { changeDay } = this.props;
+      switch (e.target.id) {
+        case "navPrevDay":
+          changeDay("blop");
+          break;
+        default:
+          changeDay("krem");
+      }
+    }
+
+    render() {
+      const { day } = this.props;
+      return (
+        <div className="navigator">
+          <span id="navPrevDay" onClick={this.handleDaySwitch}>Předchozí den</span>
+          <span>{` • ${readableDate(day)} • `}</span>
+          <span id="navNextDay">Další den</span>
+        </div>
+      );
+    }
+  }
+
+  // eslint-disable-next-line react/no-multi-comp
   class AccidentApp extends React.Component {
     constructor(props) {
       super(props);
@@ -65,15 +85,17 @@ function App(srcData) {
     }
 
     handleDayChange(day) {
+      console.log(day);
       this.setState({ day: "2019-01-27" });
     }
 
     render() {
       const { day } = this.state;
-      const dailyCount = countDayTotals(newData, day);
+      const dailyCount = countDayTotals(data.days, day);
+
       return (
         <div>
-          <Navigator day={day} onDayChange={this.handleDayChange} />
+          <Navigator day={day} changeDay={this.handleDayChange} />
           <Counter count={dailyCount} day={day} />
           <div className="info">Za následek měly</div>
           <div className="subcounters">
@@ -89,7 +111,7 @@ function App(srcData) {
             <SubCounter count={dailyCount} category="NP" />
             <SubCounter count={dailyCount} category="NR" />
           </div>
-          <Chart chartData={countTotal(data, "PN")} />
+          {<Chart chartData={graphData(data.days, "PN")} />}
         </div>
       );
     }

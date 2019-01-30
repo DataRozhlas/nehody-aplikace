@@ -1,4 +1,4 @@
-import { readableDate } from "./helperFunctions";
+import { readableDate } from "./dateHelpers";
 
 export const chartOptions = chartData => ({
   title: {
