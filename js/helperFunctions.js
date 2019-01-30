@@ -16,12 +16,28 @@ export function countDayTotals(data, day) {
   const categoryCounter = {};
 
   categories.forEach((category) => {
-    Object.keys(dailyData).forEach((region) => {
-      categoryCounter[category] = categoryCounter[category] + dailyData[region][category]
-      || dailyData[region][category];
-    });
+    categoryCounter[category] = Object.keys(dailyData)
+      .map(region => dailyData[region][category])
+      .reduce((a, b) => a + b);
   });
 
+  categoryCounter["Š"] /= 100;
+  return categoryCounter;
+}
+
+export function countMonthTotals(data) {
+  const categories = ["JP", "LR", "M", "NP", "NPJ", "NR", "NZJ", "PN", "PVA", "TR", "Š"];
+  const categoryCounter = {};
+
+  categories.forEach((category) => {
+    categoryCounter[category] = Object.keys(data)
+      .map(el => Object.keys(data[el])
+        .map(subel => data[el][subel][category])
+        .reduce((a, b) => a + b))
+      .reduce((a, b) => a + b);
+  });
+
+  categoryCounter["Š"] /= 100;
   return categoryCounter;
 }
 
@@ -42,7 +58,7 @@ export function readableCategory(name) {
     case "LR":
       return "lehce raněných";
     case "Š":
-      return "tisíc Kč škod";
+      return "miliónů Kč škod";
     default:
       return name;
   }
@@ -54,7 +70,7 @@ export function graphData(data, category) {
       new Date(el).getTime(),
       Object.keys(data[el])
         .map(subel => data[el][subel][category])
-        .reduce((a, b) => a + b, 0),
+        .reduce((a, b) => a + b),
     ]);
 }
 
