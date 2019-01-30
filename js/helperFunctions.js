@@ -9,7 +9,7 @@ export function last(arr) {
 export function readableCategory(name) {
   switch (name) {
     case "PVA":
-      return "pod vlivem alkoholu";
+      return "jízda pod vlivem alkoholu";
     case "NPJ":
       return "nedání přednosti v jízdě";
     case "NP":

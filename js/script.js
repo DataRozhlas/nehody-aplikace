@@ -11,6 +11,7 @@ import { chartOptions } from "./charts";
 
 function App(srcData) {
   const data = prepData(srcData);
+  console.log(new Date(data[0].den));
 
   const Chart = ({ chartData }) => (
     <div>
@@ -24,16 +25,14 @@ function App(srcData) {
   const Counter = () => (
     <div className="counter">
       <div className="counter-header">
-        {"Poslední den ve statistikách, "}
+        <span>Poslední den ve statistikách, </span>
         <span className="last-day-readable">{readableDate(last(data).den)}</span>
-        {", se událo"}
+        <span>, se událo</span>
       </div>
       <div className="counter-count">
         <CountUp end={last(countTotal(data, "PN"))[1]} />
       </div>
-      <div className="counter-footer">
-        {"dopravních nehod."}
-      </div>
+      <div className="counter-footer">dopravních nehod.</div>
     </div>
   );
 
@@ -48,27 +47,50 @@ function App(srcData) {
     </div>
   );
 
-  const AccidentApp = () => (
-    <div>
-      <Counter />
-      <div className="info">
-        {"Za následek měly"}
-      </div>
-      <div className="subcounters">
-        <SubCounter category="PVA" />
-        <SubCounter category="NPJ" />
-        <SubCounter category="NP" />
-        <SubCounter category="NR" />
-      </div>
-      <div className="subcounters">
-        <SubCounter category="M" />
-        <SubCounter category="TR" />
-        <SubCounter category="LR" />
-        <SubCounter category="Š" />
-      </div>
-      <Chart chartData={countTotal(data, "PN")} />
+  const Navigator = ({ day, onDayChange }) => (
+    <div className="navigator">
+      <span id="navPrevDay" onClick={onDayChange}>Předchozí den</span>
+      <span>{` • ${day} • `}</span>
+      <span id="navNextDay">Další den</span>
     </div>
   );
+
+  class AccidentApp extends React.Component {
+    constructor(props) {
+      super(props);
+      this.handleDayChange = this.handleDayChange.bind(this);
+      this.state = { day: "2019-01-29" };
+    }
+
+    handleDayChange(day) {
+      this.setState({ day: "2019-01-28" });
+    }
+
+    render() {
+      const { day } = this.state;
+      return (
+        <div>
+          <Navigator day={day} onDayChange={this.handleDayChange} />
+          <Counter />
+          <div className="info">Za následek měly</div>
+          <div className="subcounters">
+            <SubCounter category="M" />
+            <SubCounter category="TR" />
+            <SubCounter category="LR" />
+            <SubCounter category="Š" />
+          </div>
+          <div className="info">Z celkového počtu nehod je důvodem:</div>
+          <div className="subcounters">
+            <SubCounter category="PVA" />
+            <SubCounter category="NPJ" />
+            <SubCounter category="NP" />
+            <SubCounter category="NR" />
+          </div>
+          <Chart chartData={countTotal(data, "PN")} />
+        </div>
+      );
+    }
+  }
 
   ReactDOM.render(<AccidentApp />, document.getElementById("app"));
 }
