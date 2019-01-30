@@ -2,17 +2,23 @@ import { readableDate } from "./dateHelpers";
 
 export const chartOptions = chartData => ({
   title: {
-    text: "",
+    text: "Dopravní nehody v posledním měsíci",
   },
   tooltip: {
     formatter() {
       return `<b>${readableDate(this.point.x)}</b><br>${this.point.y} nehod`;
     },
   },
+  chart: {
+    style: {
+      fontFamily: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";",
+    },
+  },
   credits: {
     text: "Zdroj: Policie ČR",
     href: "https://aplikace.policie.cz/statistiky-dopravnich-nehod/Default.aspx",
   },
+  colors: ["#d52834"],
   xAxis: {
     type: "datetime",
     dateTimeLabelFormats: { // don't display the dummy year

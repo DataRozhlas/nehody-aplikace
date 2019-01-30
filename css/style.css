@@ -18,7 +18,7 @@
   cursor: pointer;
 }
 
-.info {
+.info, .chart {
   padding-top: 25px;
 }
 

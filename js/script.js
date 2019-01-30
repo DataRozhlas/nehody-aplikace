@@ -14,7 +14,7 @@ function App(srcData) {
   const data = prepData(srcData);
 
   const Chart = ({ chartData }) => (
-    <div>
+    <div className="chart">
       <HighchartsReact
         highcharts={Highcharts}
         options={chartOptions(chartData)}
@@ -74,13 +74,13 @@ function App(srcData) {
     render() {
       return (
         <div className="navigator">
-          <a id="navPrevDay" class="appnav" onClick={this.handleDaySwitch}>Předchozí den</a>
+          <a id="navPrevDay" className="appnav" onClick={this.handleDaySwitch}>Předchozí den</a>
           <span> • </span>
-          <a id="navNextDay" class="appnav" onClick={this.handleDaySwitch}>Následující den</a>
+          <a id="navNextDay" className="appnav" onClick={this.handleDaySwitch}>Následující den</a>
           <br />
-          <a id="navFullMonth" class="appnav" onClick={this.handleDaySwitch}>Poslední měsíc</a>
+          <a id="navFullMonth" className="appnav" onClick={this.handleDaySwitch}>Poslední měsíc</a>
           <span> • </span>
-          <a id="navLastDay" class="appnav" onClick={this.handleDaySwitch}>Poslední den</a>
+          <a id="navLastDay" className="appnav" onClick={this.handleDaySwitch}>Poslední den</a>
         </div>
       );
     }
@@ -105,7 +105,7 @@ function App(srcData) {
         <div>
           <Navigator day={day} changeDay={this.handleDayChange} />
           <hr />
-          { monthSum 
+          { monthSum
             ? <div className="counter-header">V posledním měsíci se událo</div>
             : (
               <div className="counter-header">
