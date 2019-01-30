@@ -2,9 +2,32 @@ export function prepData(srcData) {
   return srcData.sort((a, b) => new Date(a.den) - new Date(b.den));
 }
 
-export function last(arr) {
+export function last(arr) { // get last member of array
   return arr[arr.length - 1];
-} // get last member of array
+}
+
+export function newPrepData(srcData) {
+  const data = {};
+  srcData.sort((a, b) => new Date(a.den) - new Date(b.den));
+  srcData.forEach((el) => { data[el.den] = el.data; });
+  data.meta = { firstDay: srcData[0].den, lastDay: last(srcData).den };
+  return data;
+}
+
+export function countDayTotals(data, day) {
+  const dailyData = data[day];
+  const categories = ["JP", "LR", "M", "NP", "NPJ", "NR", "NZJ", "PN", "PVA", "TR", "Š"];
+  const categoryCounter = {};
+
+  categories.forEach((category) => {
+    Object.keys(dailyData).forEach((region) => {
+      categoryCounter[category] = categoryCounter[category] + dailyData[region][category]
+      || dailyData[region][category];
+    });
+  });
+
+  return categoryCounter;
+}
 
 export function readableCategory(name) {
   switch (name) {
@@ -27,42 +50,6 @@ export function readableCategory(name) {
     default:
       return name;
   }
-}
-
-function getMonthName(m) {
-  switch (m) {
-    case 1:
-      return "ledna";
-    case 2:
-      return "února";
-    case 3:
-      return "března";
-    case 4:
-      return "dubna";
-    case 5:
-      return "května";
-    case 6:
-      return "června";
-    case 7:
-      return "července";
-    case 8:
-      return "srpna";
-    case 9:
-      return "září";
-    case 10:
-      return "října";
-    case 11:
-      return "listopadu";
-    case 12:
-      return "prosince";
-    default:
-      return m;
-  }
-}
-
-export function readableDate(srcDate) {
-  const date = new Date(srcDate);
-  return `${date.getDate()}. ${getMonthName(date.getMonth() + 1)} ${date.getFullYear()}`;
 }
 
 export function countDayTotal(dailyData, type) {

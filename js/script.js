@@ -5,13 +5,15 @@ import CountUp from "react-countup";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import {
-  last, prepData, countTotal, readableDate, readableCategory,
+  last, prepData, newPrepData, countTotal, readableCategory, countDayTotals,
 } from "./helperFunctions";
+import { readableDate, readableWeekDay } from "./dateHelpers";
 import { chartOptions } from "./charts";
 
 function App(srcData) {
   const data = prepData(srcData);
-  console.log(new Date(data[0].den));
+  const newData = newPrepData(srcData);
+  console.log(newData);
 
   const Chart = ({ chartData }) => (
     <div>
@@ -22,24 +24,24 @@ function App(srcData) {
     </div>
   );
 
-  const Counter = () => (
+  const Counter = ({ count, day }) => (
     <div className="counter">
       <div className="counter-header">
-        <span>Poslední den ve statistikách, </span>
-        <span className="last-day-readable">{readableDate(last(data).den)}</span>
-        <span>, se událo</span>
+        <span>{`${readableWeekDay(day)} `}</span>
+        <span className="last-day-readable">{readableDate(day)}</span>
+        <span> se událo</span>
       </div>
       <div className="counter-count">
-        <CountUp end={last(countTotal(data, "PN"))[1]} />
+        <CountUp end={count.PN} />
       </div>
       <div className="counter-footer">dopravních nehod.</div>
     </div>
   );
 
-  const SubCounter = ({ category }) => (
+  const SubCounter = ({ count, category }) => (
     <div className="subcounter">
       <div className="subcounter-count">
-        <CountUp end={last(countTotal(data, category))[1]} />
+        <CountUp end={count[category]} />
       </div>
       <div className="subcounter-footer">
         {readableCategory(category)}
@@ -63,28 +65,29 @@ function App(srcData) {
     }
 
     handleDayChange(day) {
-      this.setState({ day: "2019-01-28" });
+      this.setState({ day: "2019-01-27" });
     }
 
     render() {
       const { day } = this.state;
+      const dailyCount = countDayTotals(newData, day);
       return (
         <div>
           <Navigator day={day} onDayChange={this.handleDayChange} />
-          <Counter />
+          <Counter count={dailyCount} day={day} />
           <div className="info">Za následek měly</div>
           <div className="subcounters">
-            <SubCounter category="M" />
-            <SubCounter category="TR" />
-            <SubCounter category="LR" />
-            <SubCounter category="Š" />
+            <SubCounter count={dailyCount} category="M" />
+            <SubCounter count={dailyCount} category="TR" />
+            <SubCounter count={dailyCount} category="LR" />
+            <SubCounter count={dailyCount} category="Š" />
           </div>
           <div className="info">Z celkového počtu nehod je důvodem:</div>
           <div className="subcounters">
-            <SubCounter category="PVA" />
-            <SubCounter category="NPJ" />
-            <SubCounter category="NP" />
-            <SubCounter category="NR" />
+            <SubCounter count={dailyCount} category="PVA" />
+            <SubCounter count={dailyCount} category="NPJ" />
+            <SubCounter count={dailyCount} category="NP" />
+            <SubCounter count={dailyCount} category="NR" />
           </div>
           <Chart chartData={countTotal(data, "PN")} />
         </div>
