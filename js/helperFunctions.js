@@ -6,6 +6,29 @@ export function last(arr) {
   return arr[arr.length - 1];
 } // get last member of array
 
+export function readableCategory(name) {
+  switch (name) {
+    case "PVA":
+      return "pod vlivem alkoholu";
+    case "NPJ":
+      return "nedání přednosti v jízdě";
+    case "NP":
+      return "nesprávné předjíždění";
+    case "NR":
+      return "nepřiměřená rychlost";
+    case "M":
+      return "mrtvých";
+    case "TR":
+      return "těžce raněných";
+    case "LR":
+      return "lehce raněných";
+    case "Š":
+      return "tisíc Kč škod";
+    default:
+      return name;
+  }
+}
+
 function getMonthName(m) {
   switch (m) {
     case 1:

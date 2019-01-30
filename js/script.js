@@ -5,13 +5,13 @@ import CountUp from "react-countup";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import {
-  last, prepData, countTotal, readableDate,
+  last, prepData, countTotal, readableDate, readableCategory,
 } from "./helperFunctions";
 import { chartOptions } from "./charts";
 
 function App(srcData) {
   const data = prepData(srcData);
-  
+
   const Chart = ({ chartData }) => (
     <div>
       <HighchartsReact
@@ -43,15 +43,7 @@ function App(srcData) {
         <CountUp end={last(countTotal(data, category))[1]} />
       </div>
       <div className="subcounter-footer">
-        {category === "PVA" ? "pod vlivem alkoholu"
-         : category === "NPJ" ? "nedání přednosti v jízdě"
-         : category === "NP" ? "nesprávné předjíždění" 
-         : category === "NR" ? "nepřiměřená rychlost"
-         : category === "M" ? "mrtvých"
-         : category === "TR" ? "těžce raněných"
-         : category === "LR" ? "lehce raněných"
-         : category === "Š" ? "tisíc Kč škod"
-         : "blemp"}
+        {readableCategory(category)}
       </div>
     </div>
   );
